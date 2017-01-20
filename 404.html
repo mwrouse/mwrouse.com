@@ -1,0 +1,41 @@
+---
+title: 404 Not Found
+layout: default
+permalink: /404.html
+---
+<h1 id="greeting-msg">Well, <span id="growlix">#$%*</span>!</h1>
+<div class="about">
+    Don't panic, it's not your fault.
+    <br/><br/>
+    You're on your own though... Sorry.
+</div>
+
+<script type="text/javascript">
+    // Growlix generator
+    var symbols = ['@', '#', '$', '%', '&', '*'];
+    var WORD_LENGTH = 4;
+
+    window.addEventListener('load', function() {
+        var swearWord = '';
+        var prevSymbol = '';
+        var currSymbol = '';
+        var count;
+
+        for (var i = 0; i < WORD_LENGTH; i++) {
+            count = 0;
+            do {
+                currSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+                count++;
+            } while (currSymbol == prevSymbol && count <= 10);
+
+            swearWord += currSymbol; // Add to the word
+
+            prevSymbol = currSymbol;
+        }
+
+        var el = document.getElementById('growlix');
+        if (el) {
+            el.innerHTML = swearWord;
+        }
+    });
+</script>

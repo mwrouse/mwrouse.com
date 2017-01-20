@@ -1,0 +1,16 @@
+site: {
+    url: http://daphne.mwrouse.com
+
+    title: Michael Rouse
+    description: Michael Rouse personal website
+    author: Michael Rouse
+}
+
+blog: {
+    permalink: /blog/%slug%
+}
+
+compiler: {
+    output: _build
+    ignore: _less
+}

@@ -1,0 +1,22 @@
+
+        <footer class="footer">
+            <div class="wrapper reading-width">
+                <a href="http://github.com/mwrouse" title="GitHub" class="overlay-hover"><img src="{{ site.url }}assets/img/github.png"></a>
+                <a href="http://pen.mwrouse.com/" title="CodePen" class="overlay-hover"><img src="{{ site.url }}assets/img/codepen.png"></a>
+                <a href="http://mwrouse.com/linkedin" title="LinkedIn" class="overlay-hover"><img src="{{ site.url }}assets/img/linkedin.png"></a>
+                <br/>
+                <span class="copyright">&copy; 2017 Michael Rouse</span>
+                <br/><br/><span style="font-size:1.5em" id="emoji">&#x1F618;</span>
+            </div>
+        </footer>
+        <script type="text/javascript" src="{{ site.url }}assets/js/emojify.js"></script>
+        <script type="text/javascript">
+        	 window.addEventListener('load', function() {
+        		var emojis = ['wink', 'tongueout', 'hearteyes', 'kiss', 'smilewithhorns', 'tongueoutwink', 'sunglasses', 'scream'];
+                	var emoji = document.getElementById('emoji');
+                	if (emoji) {
+                		emoji.innerHTML = ':' + emojis[Math.floor(Math.random() * emojis.length)] + ':';
+                		emoji.emojify();
+        		}
+                });
+        </script>

@@ -1,0 +1,14 @@
+        <header class="header">
+            <div class="wrapper reading-width">
+                <h2 class="page-title"><a href="{{ site.url }}" class="no-underline">{{ site.title }}</a></h2>
+                <nav>
+                    <ul class="nav">
+                        <li class="{{ (page.navTitle == "home") ? "active" : "" }}"><a href="{{ site.url }}" class="no-underline">Home</a></li>
+                        <li class="{{ (page.template == "post" || page.template == "blog" ) ? "active" : "" }}"><a href="{{ site.url + "blog/" }}" class="no-underline">Blog</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        {% if page.heroImage %}
+            <div class="hero"></div>
+        {% end if %}

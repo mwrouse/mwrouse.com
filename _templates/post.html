@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="{{ site.language }}">
+    {% include head.html %}
+    <body>
+        {% include page_header.html %}
+        <article>
+            <div class="wrapper reading-width">
+                <h1 class="post-title">{{ page.title }}</h1>
+                <h5 class="post-date">On {{ page.date }} By {{ page.author }}</h5>
+                <div class="post-content">
+                    {{ content }}
+                </div>
+            </div>
+        </article>
+        {% if page.syntaxHighlight %}
+        <script type="text/javascript" src="{{ site.url + "assets/js/prism.js" }}"></script>
+        {% end if %}
+        {% include footer.html %}
+    </body>
+</html>

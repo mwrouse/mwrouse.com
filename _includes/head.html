@@ -1,0 +1,33 @@
+    <head>
+        <title>{{ page.title }}</title>
+
+        <link rel="canonical" href="{{ page.url }}" />
+
+        <link rel="stylesheet" href="{{ site.url + "assets/css/main.css" }}"/>
+        <meta charset="{{ site.encoding }}">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport"  content=" width=device-width, initial-scale=1">
+
+        <meta name="author" content="{{ page.author }}" />
+        <meta name="description" content="{{ page.description }}" />
+        {% if page.template == "post" %}
+            <meta property="og:type" content="article" />
+            <meta property="og:title" content="{{ page.title }}" />
+            <meta property="og:url" content="{{ page.url }}" />
+            <meta property="twitter:card" content="summary_large_image"/>
+    	    <meta property="twitter:site" content="@michaelwrouse"/>
+    	    <meta property="twitter:creator" content="@michaelwrouse"/>
+        {% end if %}
+        {% if page.heroimage %}
+            <meta property="og:image" content="{{ site.url + page.heroImage }}" />
+            <meta property="twitter:image" content="{{ site.url + page.heroImage }}" />
+            <style>
+                .hero {background: url('{{ site.url + page.heroimage }}') no-repeat scroll {{ (page.template == "default") ? "top" : "center" }} center / cover transparent; }
+            </style>
+        {% end if %}
+
+        {% if page.syntaxHighlight %}
+        <link rel="stylesheet" href="{{ site.url + "assets/css/prism.css" }}"/>
+        {% end if %}
+
+    </head>

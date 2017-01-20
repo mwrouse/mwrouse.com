@@ -1,0 +1,68 @@
+---
+title: Caclulate Pi using Python
+template: post
+syntaxHighlight: true
+---
+<p>In honor of Pi day (3/14/15 = 3.1415) I’ve decided to show people a simple program that will calculate the value of pi using Python.</p>
+<!-- more -->
+<h2 id="why-python">Why Python?</h2>
+<p>It’s simple, I chose python because the syntax is easy to understand and the file name will be able to be <code class="highlighter-rouge">pi.py</code> (pronounced pie dot pie), <em>evil laugh</em>.</p>
+<p></p>
+<p></p>
+<h2 id="leibniz-formula">Leibniz Formula</h2>
+<p>To calculate Pi, we could just take the circle’s circumference and divide it by its diameter, but honestly who wants to take the easy way out?</p>
+<p></p>
+<p></p>
+<p>No one.</p>
+<p></p>
+<p></p>
+<p>So we are going to use the Leibniz Formula to calculate Pi.</p>
+<p></p>
+<p></p>
+<p>It’s pretty simple actually, to calculate Pi we can use this formula:<br/>
+<img src="leibnizFormula.png"></p>
+<p></p>
+<p></p>
+<p>Where <code class="highlighter-rouge">n</code> will be an infinity large and odd number, the more numbers you do the more accurate your calculation of pi will be, however, it will also take much longer!</p>
+<p></p>
+<p></p>
+<p>And, if you care, here is this formula expressed in summation notation:<br/>
+<img src="leibnizSummation.png"></p>
+<p></p>
+<p></p>
+<p>You can see this formula in action on <a href="http://www.wolframalpha.com/input/?i=sum_i%3D0<sup>1000000</sup>+%28%284%28-1%29^i%29%2F%282i+%2B+1%29%29">Wolfram|Alpha</a>.</p>
+<p></p>
+<p></p>
+<p>This method is <em>extremely</em> slow compared to others, but it is easy to understand, that’s why we are using it.</p>
+<p></p>
+<p></p>
+<h2 id="the-python-program">The Python Program</h2><p></p>
+<p></p>
+<pre class="language-python"><code>
+# Pi Calculator
+# By Michael Rouse
+pi = 0
+accuracy = 100000
+
+for i in range(0, accuracy):
+    pi += ((4.0 * (-1)**i) / (2*i + 1))
+
+    print(pi)
+</code></pre>
+<p><code>for i in range(0, accuracy)</code> will loop the indented code for all numbers between 0 and <code class="highlighter-rouge">accuracy</code>.</p>
+<p></p>
+<p></p>
+<p>This for-loop is just the direct translation of the formula above.</p>
+<p></p>
+<p></p>
+<p>Using this program I was able to calculate Pi to <code class="highlighter-rouge">3.14157</code> using accuracy of <code class="highlighter-rouge">100,000</code>. (I know that the 7 doesn’t go there in Pi, but with more accuracy it will eventually change to a 9).</p>
+<p></p>
+<p></p>
+<h2 id="running-the-program">Running the Program</h2>
+<p>Go ahead and change the accuracy if you would like, just remember it will take longer with more accuracy.</p>
+<p></p>
+<p></p>
+<p>Then run the program in whatever Python editor you like (you need a Python interpreter installed though) and then watch as Pi gets more and more accurate.</p>
+<p></p>
+<p></p>
+<p><strong><em>Happy π Day!</em></strong></p>
