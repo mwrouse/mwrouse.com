@@ -4,6 +4,8 @@ site: {
     title: Michael Rouse
     description: Michael Rouse personal website
     author: Michael Rouse
+
+    charset: utf-8
 }
 
 blog: {
