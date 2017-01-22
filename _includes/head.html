@@ -19,10 +19,10 @@
     	    <meta property="twitter:creator" content="@michaelwrouse"/>
         {% end if %}
         {% if page.heroimage %}
-            <meta property="og:image" content="{{ site.url + page.heroImage }}" />
-            <meta property="twitter:image" content="{{ site.url + page.heroImage }}" />
+            <meta property="og:image" content="{{ page.url + page.heroImage }}" />
+            <meta property="twitter:image" content="{{ page.url + page.heroImage }}" />
             <style>
-                .hero {background: url('{{ site.url + page.heroimage }}') no-repeat scroll {{ (page.template == "default") ? "top" : "center" }} center / cover transparent; }
+                .hero {background: url('{{ page.url + page.heroimage }}') no-repeat scroll {{ (page.template == "default") ? "top" : "center" }} center / cover transparent; }
             </style>
         {% end if %}
 

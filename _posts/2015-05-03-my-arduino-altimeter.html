@@ -1,0 +1,84 @@
+---
+title: My Arduino Altimeter
+template: post
+heroImage: main.jpg
+---
+If I am passionate about anything in life, it's rockets and Arduinos. The two have provided me with endless fun, and endless learning. And I finally purchased the parts necessary to combine my two passions: an Arduino Altimeter.<p></p><p>I had thought about just purchasing an altimeter, but that's boring. I wanted to put time, and thought, into creating something that I could use almost on a daily basis. And I had been doing some research and there were a couple great tutorials online about this that I could fall back on. Specifically, <a href="http://www.instructables.com/id/The-Ultimate-Altimeter-A-compact-Arduino-altimeter/" target="_blank">this</a> Instructables article by <a href="http://www.instructables.com/member/qubist/" target="_blank">qubist</a>, and I got most of my inspiration from <a href="http://altduino.de" target="_blank">ALTDuino</a>.</p>
+<!-- more -->
+<p>What really irritated me is that no matter how envious I was about the graphs that the ALTDuino creates, I will <i>probably</i> never be able to look at the code (for some reason he won't let his code be OpenSource...).</p><p>So, I did the next best thing, I took the design/layout that Qubist used on his Instructables tutorial and wrote my own code for it. And wrote my own <a href="https://processing.org/" target="_blank">Processing</a> program to read data from my altimeter and graph it (this was a rough process).</p><p>In this blog post, I plan to highlight the key challenges I faced when coding this altimeter, along with solutions to these. I hope that this article will be able to serve as a backbone for other people's future projects. And, yes, my <a href="https://github.com/mwrouse/ArduinoAltimeter" target="_blank">code is, and always will be open sourced</a>.</p><p>This is <b>NOT</b> a tutorial, if you can use as one then feel free to use it as one though.
+</p>
+
+<h2>The Parts</h2>
+<p>I started prototyping on an <a href="http://arduino.cc/en/Main/ArduinoBoardNano" target="_blank">Arduino Nano</a>, but moved the final project over to an <a href="http://arduino.cc/en/Main/ArduinoBoardProMini" target="_blank">Arduino Pro Mini 3.3v</a>.</p><p>What I used:</p><p><a href="https://www.sparkfun.com/products/11084" target="_blank">MPL3115A2 Altitude Sensor</a></p><p><a href="https://www.sparkfun.com/products/12710" target="_blank">7-Segment 4-Digit Bubble Display</a></p><p><a href="https://www.sparkfun.com/products/731" target="_blank">Rechargeable Battery</a></p><p><a href="https://www.sparkfun.com/products/10217" target="_blank">Battery Charger</a>
+</p>
+
+<h2>The First Obstacle</h2>
+<p>The first "real" problem I had with this project was unreliable readings from the altimeter, I was using <code class="function">readAltitudeFt()</code> which just called the standard <code class="function">readAltitude()</code> function to get the altitude in meters (above sea level), and then converted it to feet (since I'm in the U.S. this was more desirable to me). </p><p>However, these readings were extremely unreliable, they would fluctuate up or down 2 feet while in the same spot. I know that 2ft is not <i>that</i> big of a deal, and it still makes it accurate, but it just wasn't okay with me.</p><p>I tried the program using <code class="function">readAltitude()</code> and noticed that the reading <i>appeared</i> to be more stable, even though it was doing the same thing (the conversion to ft. made the numbers larger so it jumped around more), the stable print out was much more satisfying with me. So that's why it reports the altitude in meters.
+</p>
+
+<h2>The Logging Issues</h2>
+<p>At this point I had my altimeter working the way I wanted it to; when the board was powered on it would take a baseline reading, and use this to get the rocket's altitude above ground level. Well, if I want to graph the flights of my rocket then I need to save data during the flight; and I'm not really sure how long each flight will be, probably no more than 2 minutes (at my current level). And the Nano and the Pro Mini (both ATmega328) only have limited storage from program variables (2KB). And I knew that I wasn't going to write to the EEPROM every 1/4<sup>th</sup> of a second, either. </p><p>I solved this by saving the current altitude in an array of integers that has 500 elements, that's 1KB of memory (Integers are 2-bytes) just for the data logging, about half of what each board will be able to provide me. And if you're wondering, the variables are all stored in volatile memory, so if I loose power during the flight I will be unable to graph it.</p><p>I did, however, design my code to detect an apogee (once it's 2m below the highest point in the flight) it will write the highest point to the EEPROM. This will allow me to recover at least that much if I loose power (after apogee). The program will also load that value in the <code class="function">setup()</code> function and display it on the bubble display.</p><p>Back to the logging, I designed the program to log the altitude detected every 200ms after a launch was detected (2m above the baseline reading). By doing this I will be able to graph at most, a 100 second flight. I'm sure that will be plenty to at least get the apogee recorded. The program will only log data from the point that a launch is detected to the point a landing is detect (at or below the baseline, or repeating the same altitude 30+ times).</p><p>If the program runs out of logging before the apogee, it will still detect and save the apogee to EEPROM :).
+</p>
+
+<h2>The Serial Connection Problem</h2>
+<p>In my program, once a landing is detected the program (in the <code class="function">loop()</code>) will just loop through the array items and send them over <code class="function">Serial</code>. It's separated by an '<code class="function">a</code>' whenever the index of the array is <code class="function">0</code>.This is so I will be able to tell when the logged data starts and ends. Each index item is also separated by a '<code class="function">,</code>' to be able to distinguish between them.</p><p>Originally I wanted to just be able to connect the Arduino to my computer over USB to get the data off it, but when you do this, the Arduino will automatically reset, and from what I looked up on this there wasn't anyway of getting around the issue. I tried shorting out the <code class="function">RESET</code> and <code class="function">GROUND</code> pins but this wasn't solving the issue for me.</p><p>I was able to solve this issue by using another Arduino, this time an Uno. I was able to have this connected to the computer with the Serial Monitor (or Processing) open, and then connect the <code class="function">GROUND</code> pin from the Uno to the Altimeter's ground, then connect the <code class="function">RX</code> (Serial receiving) pin on the Uno to the <code class="function">TX</code> (Serial transmitting) pin on my altimeter. This would then send the data to the Uno, which could process it and make sure that the computer only receives the data one time, not continuous looping. Otherwise in Processing the graph would keep redrawing over and over again.</p><p>It's important to note, and was a learning point for me, that if you have these pins connected to your Altimeter and then you open the Serial monitor (or the graphing program) on your computer, both Arduinos will reset!
+</p>
+
+<h2>The Graphing Program</h2>
+<p>I have only used Processing one other time (as of 4/2015), and it was just a program someone else wrote so I didn't <i>actually</i> use it. Writing the graphing program did present a little learning curve, but nothing some research and sample programs couldn't solve. I won't go much into this, as it's not the main function of the altimeter, it's just a bonus feature.</p><p>Yes, I could have just used Excel, but if I was going to take the easy way out then I would have purchased an altimeter.
+</p>
+
+<h2>The Graph Issues</h2>
+<p>At first, while I was using <code class="function">readAltitudeFt()</code> I would get some really messed up graphs. They would read all of the charts, not like the graph of a rocket (or anything tossed up) should resemble (I'm sorry I don't have any screenshots of these graphs, I wish I would have taken some).</p><p>I wasn't quite sure if this was a problem with the graphing program or how I was logging the data in my Arduino. I added some error checking for the logged data. </p><p>For example, if the altitude was less than the previous altitude and there wasn't apogee yet then it wouldn't log that data. This solved most of the problems, I knew there would still be some anomalies on the graphs though, as of now most of them are on the descent of the rocket. I can live with that.
+</p>
+
+<h2>First Flights</h2>
+<p>On 4/18/2015 I was able to test my altimeter in model rockets for the first time. The results were beautiful. At lest they were half of the time... After flying twice in my Estes Heat Seeker I waited maybe an hour and a half before trying to fly it in my Estes Skywriter (modified to have a payload section); during this time the weather did change and the wind picked up some. When attempting to launch in my Skywriter I experienced the strange problem of the altimeter detecting apogee moments after turning on. Of course, it may have been the weather but I'm looking into the issue.</p><p><a href="007.jpg"><img src="{{ post_image(007.jpg) }}" class="center large" alt="center"></a>
+Above: The Estes Heat Seeker with the altimeter in the payload bay.
+<a href="008.jpg"><img src="{{ post_image(008.jpg) }}" class="center large" alt="center"></a>
+Above: The graph of its very first flight (160m), at apogee I believe that the ejection gases (or turbulence from the ejection) caused the inaccurate reading which you can see dip down.
+<a href="009.jpg"><img src="{{ post_image(009.jpg) }}" class="center large" alt="center"></a>
+<a href="010.jpg"><img src="{{ post_image(010.jpg) }}" class="center large" alt="center"></a>
+Above: The Estes Heat Seeker with the altimeter for its second flight.
+<a href="011.jpg"><img src="{{ post_image(011.jpg) }}" class="center large" alt="center"></a>
+Above: The graph of the second flight (123m). I added recovery wadding into the payload section to protect it from the gasses.
+<a href="006.jpg"><img src="{{ post_image(006.jpg) }}" class="center large" alt="center"></a>
+Above: The modified Estes Skywriter.
+<a href="012.jpg"><img src="{{ post_image(012.jpg) }}" class="center large" alt="center"></a>
+Above: The Skywriter with a commercial altimeter for comparison (my altimeter turned off for some reason but the altitude reported by the other was around what mine had been reporting all day).
+</p>
+
+<h2>High Powered Flights</h2>
+<p>On 5/2/2015 I flew my altimeter in Elizabethtown, Kentucky for its first mid-power flight and high powered flight. The altimeter performed well on an F-16 engine. However, I was unable to record the flight on a high-powered I-180 Skidmark motor because I'm an idiot. It took four failed attempts to launch the I-180 due to a bad igniter and then some tries until we realized we had to clean the alligator clips, after doing that it finally launched. Since it was on the 5<sup>th</sup> attempt that it worked I was just anxious to launch the rocket and forgot to re-arm the altimeter... I even left the key for it in the rocket. Whoops. </p><p>Here are some pictures of the launch anyways.
+<a href="013.jpg"><img src="{{ post_image(013.jpg) }}" class="center large" alt="center"></a>
+Above: How I had the altimeter in the payload section (please excuse my finger and the out-of-focus picture).
+<a href="014.jpg"><img src="{{ post_image(014.jpg) }}" class="center large" alt="center"></a>
+Above: The Ascender ready for flight
+<a href="285m.jpg"><img src="{{ post_image(285m.jpg) }}" class="center large" alt="center"></a>
+Above: The graph of the Ascender flight, read 285m on an F15-6 engine.
+<a href="015.jpg"><img src="{{ post_image(015.jpg) }}" class="center large" alt="center"></a>
+Above: How I had the altimeter in the DX3
+<a href="016.jpg"><img src="{{ post_image(016.jpg) }}" class="center large" alt="center"></a>
+Above: More of the improvised altimeter bay for the Super DX3
+<a href="017.jpg"><img src="{{ post_image(017.jpg) }}" class="center large" alt="center"></a>
+<a href="018.jpg"><img src="{{ post_image(018.jpg) }}" class="center large" alt="center"></a>
+<a href="019.jpg"><img src="{{ post_image(019.jpg) }}" class="center large" alt="center"></a></p><p></p>
+
+<h2>The Code</h2>
+<p>As I said earlier in this article, my code is open to the public, and forever will be. You can check out the entire altimeter project on GitHub <a href="https://github.com/mwrouse/ArduinoAltimeter" target="_blank">here</a>. Suggestions to the code are always welcome!
+</p>
+
+<h2>Development Pictures</h2>
+<p><a href="main.jpg"><img src="{{ post_image(main.jpg) }}" class="center large" alt="center"></a>
+Above: the first version
+<a href="001.jpg"><img src="{{ post_image(001.jpg) }}" class="center large" alt="center"></a>
+Above: the second version, more compressed down for testing
+<a href="002.jpg"><img src="{{ post_image(002.jpg) }}" class="center large" alt="center"></a>
+Above: the container I used to toss the altimeter up for testing data
+<a href="003.jpg"><img src="{{ post_image(003.jpg) }}" class="center large" alt="center"></a>
+Above: the final, most compact, version of the altimeter with its battery
+<a href="004.jpg"><img src="{{ post_image(004.jpg) }}" class="center large" alt="center"></a>
+Above: a test slingshot rocket that produced the graph below
+<a href="005.jpg"><img src="{{ post_image(005.jpg) }}" class="center large" alt="center"></a>
+Above: a good example of the anomaly I was talking about (Apogee: 14m)
+</p>
