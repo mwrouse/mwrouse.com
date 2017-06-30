@@ -3,15 +3,60 @@ title: Choosing a Database for Solar Car Telemetry Data
 template: post
 description: An article I wrote for the Missouri S&amp;T Solar Car Team about week long testing to determine a suitable database to handle our telemetry data.
 ---
-Click "Continue Reading" to read my article on the Solar Car website about choosing a database to handle telemetry data.
-
-
+<code>This post was originally published on the <a href="http://solarcar.mst.edu/news/725/choosing-a-database-for-solar-car-telemetry-data">Missouri S&amp;T Solar Car team blog</a></code>
+<br/><br/>
+For our previous car (<a href="http://solarcar.mst.edu/cars/solar-miner-2016">Solar Miner</a>) I rewrote and redesigned the telemetry software that was used in support vehicles for viewing data coming from the car. It worked well, and gave us all the information we needed at the time, but it suffered in some areas. One of these was that data was never stored anywhere except a plain-text log file, which proved slow and unreliable. With this in mind, our new telemetry system will store information in a database for further review.
+<br/><br/>
+This post is a discussion of data gathered during week long tests performed on two popular database systems.
 <!-- more -->
-<br/><br/><br/>
-Redirecting...
-<br/>
-If you are not automagically redirected then <a href="http://solarcar.mst.edu/news/725/choosing-a-database-for-solar-car-telemetry-data">click here</a>.
+<h2>Old System</h2>
+The previous telemetry software, as stated before, only stored incoming data in a plain-text, comma-separated file. This proved unreliable in a few ways:
 
-<script type="text/javascript">
-    window.location.href = "http://solarcar.mst.edu/news/725/choosing-a-database-for-solar-car-telemetry-data";
-</script>
+<ul>
+    <li>Had to pause, or stop data logging in order to processes, handle, and interpret data received</li>
+    <li>Logging to files is slow</li>
+    <li>Data was only received by computers actively running the telemetry software on the same network as the car</li>
+</ul>
+
+With these faults in-mind, I have decided that all data coming from the car will be logged in a database, and also seen by telemetry software in real time. A dedicated machine running software to log incoming telemetry packets will run at all times when the car is running, constantly logging.
+
+<br/><br/>
+This will allow for data to be seen in real time (and only real time) on the telemetry software, as well as being processed and stored into a database. The machine will host a website that can be used during the race to see charts/graphs of data coming from the car, removing the legacy MATLAB program from the process.
+
+<h2>Our Needs</h2>
+This constant flood of data is why we are performing these tests ourselves. Messages are sent out about every 100ms on the car, for just one system, that's a lot of messages!
+<br/><br/>
+We haven't exactly narrowed down how many telemetry messages our new car will send out a second, so we are using the speed of packets from Solar Miner.
+<br/><br/>
+We need a system that can both read, and write, to a database extremely quickly, no matter how large our tables become. We do not want to be cleaning out a table while in the middle of Australia because we have too much data.
+<br/><br/>
+While there are companies, and other scenarios, where database usage will be ten-fold more heavy than ours, these tests provide team members with testing experience, and experience interacting with a database.
+
+<h2>Database Systems Tested</h2>
+Tests were conducted against <a href="http://www.mysql.com/" target="_blank">MySQL</a> and <a href="http://cassandra.apache.org/" target="_blank">Apache Cassandra</a>.
+<br/><br/>
+Since we just want to know what systems will slow down more as data increases, our tests will simply insert a lot of rows, and the query for each operation as data grows larger will be tracked.
+<br/><br/>
+Average write times are recorded by taking the average time of 20,000 INSERT queries.
+<br/><br/>
+Average read times are taken while inserting rows, and then again when not inserting rows. 20,000 SELECT operations are performed during both of these tests.
+<br/><br/>
+A fourth, and final test, shows the average INSERT query time while rows are being read from the database.
+
+<h2>Results</h2>
+<img src="{{ post_asset(read-times.png) }}"><br/>
+Above is a chart that shows average read times (over 20,000 SELECT operations) for both MySQL (red and blue) and Apache Cassandra (green and yellow/orange).
+<br/><br/>
+There are four total data sets, two for each system. One of these sets shows the average read time while the database is having data written to it.
+<br/><br/>
+What this shows is that as you return more and more rows from MySQL each query grows slightly slower, not by a lot, but still slower. Both reading and reading while writing have a steady incline to them, they're reliably getting slower.
+<br/><br/>
+While looking at the data gathered from Cassandra, query times are nearly stable when only reading, as well as when you are reading and writing. Reading while writing with Cassandra did tend to fluctuate more than just reading, it is still hovering around the same times, where MySQL is a steady increase.
+<br/><br/>
+<img src="{{ post_asset(write-times.png) }}"><br/>
+The second chart shows the average write time (over 20,000 INSERT operations) on by MySQL (left) and Apache Cassandra (right).
+<br/><br/>
+Having never touched a NoSQL database before, it was amazing to see how quickly Cassandra could insert new data. I re-ran this test multiple times to confirm that this result was consistent, and sure enough, Cassandra blew MySQL out of the water every single time.
+
+<h2>Conclusion</h2>
+After running the tests, and many discussions, Apache Cassandra has been chosen as our database system of choice. While Cassandra performs slower than MySQL when reading while writing and returning &lt;20,000 rows we will probably find ourselves in situations where we will need to return a lot more than 20,000 rows since it only represents about 2 minutes of telemetry data.
