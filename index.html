@@ -36,12 +36,12 @@ template: default
         <div class="project-links">
             {% if project.example %}
             <a href="{{ project.example }}" title="Demo" class="second-accent">Demo</a>
-                {% if project.github %}
+                {% if project.source %}
                 &nbsp;|&nbsp;
                 {% end if %}
             {% end if %}
-            {% if project.github %}
-            <a href="{{ project.github }}" title="GitHub" class="second-accent">GitHub</a>
+            {% if project.source %}
+            <a href="{{ project.source }}" title="Source" class="second-accent">Source</a>
             {% end if %}
         </div>
     </div>
