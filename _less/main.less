@@ -1,15 +1,15 @@
-// "out": "../assets/css/main.css", "compress": true
+// out: ../assets/css/main.css, compress: true
 @import "variables.less";
 
 html, body {
     margin: 0;
     padding: 0;
+    .color-standard;
     font-family: 'Helvetica Neue', 'Roboto', sans-serif;
     font-size: 1em;
     line-height: 1.6em;
-    box-sizing: border-box;
-    color: @color-font;
     letter-spacing: 0.6px;
+    box-sizing: border-box;
 }
 
 * {
@@ -20,25 +20,37 @@ ul {
     list-style-type: square;
 }
 
-h1,h2,h3 { color: @color-primary; }
+h1,h2,h3 { .color-primary; }
+
 h5 {
     font-weight: 300;
 }
 h2 {
-    font-size: 1.8em;
+    font-size: 2em;
 }
 h3 {
     font-size: 1.7em;
 }
 
-img.zoom-in { cursor: zoom-in; }
+img {
+    &.zoom-in {
+        cursor: zoom-in;
+    }
 
-a {
-    cursor: pointer !important;
-    text-decoration: none;
-    color: inherit;
+    &.outline {
+        border: 1px solid rgba(100, 100, 100, 0.7);
+    }
 }
 
+a {
+    .color-link;
+    cursor: pointer !important;
+    text-decoration: none;
+
+    &:hover {
+        .color-link-hover;
+    }
+}
 
 .reading-width {
     max-width: 70vw;
@@ -70,9 +82,11 @@ a {
         justify-content: space-between;
         line-height: 2em;
 
-
-        .page-title:hover {
-            color: @color-primary-hover;
+        .page-title {
+            a {
+                .color-primary;
+                .color-primary-hover;
+            }
         }
 
         ul.nav {
@@ -85,23 +99,19 @@ a {
 
             li {
                 display: inline-block;
-                margin: 0 0.3em;
+                margin: 0 0.5em;
                 padding: 0;
                 list-style-position: outside;
                 cursor: pointer;
 
-                a {
-                    color: @color-font;
-                    padding-bottom: 5px;
-                    &:hover {
-                        color: #686868;
-                    }
-                }
-
                 &.active {
-                    a {
-                        border-bottom: 3px solid @color-primary;
-                    }
+                    border-bottom: 3px solid @color-primary;
+
+                }
+                a {
+                    .color-standard;
+                    padding-bottom: 5px;
+
                 }
 
             }
@@ -325,6 +335,8 @@ footer {
 
 pre {
     display: block;
+    font-size: 0.8em;
+    line-height: -0.5em;
     color: @color-code-font;
     margin: 10px 0;
     font-family: monospace;
@@ -379,29 +391,18 @@ blockquote {
 }
 
 .accent {
-    color: @color-primary;
+    color: @color-accent;
     cursor: default;
+}
 
+.accent-hover {
+    .accent;
     &:hover {
-        color: @color-primary-hover;
+        color: @color-accent-hover;
     }
 }
 
 
-.second-accent {
-    color: @color-secondary;
-    cursor: default;
-}
-a.second-accent {
-    &:hover {
-        text-decoration: underline;
-    }
-}
-
-.accent-no-hover {
-    color: @color-primary;
-    cursor: default;
-}
 
 .about-intro { font-size: 1.5em; line-height: 1.6em;}
 .about {
@@ -414,8 +415,13 @@ a.second-accent {
 }
 
 
-.project {
+.project2 {
     margin: 50px 0;
+    .color-standard;
+
+    .title {
+        .color-secondary;
+    }
     .project-title {
         font-size: 1.4em;
 
@@ -432,6 +438,112 @@ a.second-accent {
 
     .project-links {
         margin-top: 10px;
+    }
+}
+
+
+.experience {
+    .color-standard;
+    margin-top: 50px;
+
+    .title {
+        .color-secondary;
+        font-size: 1.5em;
+        font-weight: bolder;
+
+        .subtitle {
+            .color-standard;
+            font-weight: normal;
+            font-size: 0.7em;
+            margin-left: 20px;
+        }
+
+        .years {
+            .color-standard;
+            font-size: 0.5em;
+            font-weight: 200;
+            margin-left: 20px;
+        }
+
+        @media all and (max-width: 1500px) {
+            .subtitle, .years {
+                display: block;
+                margin-left: 0;
+            }
+            .years {
+                margin-bottom: 10px;
+            }
+        }
+    }
+}
+
+
+.project {
+    .color-standard;
+    margin-top: 50px;
+
+    .title {
+        .color-secondary;
+        font-size: 1.5em;
+        font-weight: bolder;
+    }
+
+    .subtitle {
+        .color-standard;
+        font-weight: normal;
+        font-size: 0.7em;
+        margin-left: 20px;
+    }
+
+    .links {
+        margin-top: 10px;
+    }
+
+    @media all and (max-width: 1500px) {
+        .subtitle {
+            display: block;
+            margin-left: 0;
+            margin-bottom: 10px;
+        }
+    }
+}
+
+.spaced-center {
+    width: -moz-fit-content;
+    width: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: -webkit-fit-content;
+
+}
+.center {
+    text-align: center;
+}
+
+.caption {
+    font-family: monospace;
+    color: #000;
+    font-size: 1em;
+}
+
+
+
+figure {
+    .center;
+    margin-top: 15px;
+    margin-bottom: 15px;
+
+    img {
+        width: 55%;
+    }
+
+    figcaption {
+        .caption;
+    }
+
+    @media all and (max-width: 1000px) {
+        img {
+            width: 100%;
+        }
     }
 }
 

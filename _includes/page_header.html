@@ -3,8 +3,10 @@
                 <h2 class="page-title"><a href="{{ site.url }}" class="no-underline">{{ site.title }}</a></h2>
                 <nav>
                     <ul class="nav">
-                        <li class="{{ (page.navTitle == "home") ? "active" : "" }}"><a href="{{ site.url }}" class="no-underline">Home</a></li>
-                        <li class="{{ (page.template == "post" || page.template == "blog" ) ? "active" : "" }}"><a href="{{ site.url + "blog/" }}" class="no-underline">Blog</a></li>
+                        <li class="{{ (page.navTitle == "Home") ? "active" : "" }}"><a href="{{ site.url }}" class="no-underline">Home</a></li>
+                        <li class="{{ (page.navTitle == "Experience") ? "active" : "" }}"><a href="{{ site.url + "experience/" }}">Experience</a></li>
+                        <li class="{{ (page.navTitle == "Portfolio") ? "active" : "" }}"><a href="{{ site.url + "portfolio/" }}">Portfolio</a></li>
+                        <!--<li class="{{ (page.template == "post" || page.template == "blog" ) ? "active" : "" }}"><a href="{{ site.url + "blog/" }}" class="no-underline">Blog</a></li>-->
                     </ul>
                 </nav>
             </div>

@@ -1,0 +1,37 @@
+---
+title: Portfolio
+navTitle: Portfolio
+template: default
+---
+<h1>Portfolio</h1>
+<h4>Some personal projects</h4>
+
+{% foreach site.portfolio as project %}
+    <!-- {{ project.title }} -->
+    <div class="project">
+        <div class="title">
+            {{ project.title }}
+
+        {% if project.subtitle %}
+            <span class="subtitle">{{ project.subtitle }}</span>
+        {% end if %}
+        </div>
+
+        <div class="description">
+            {{ content }}
+        </div>
+
+        <div class="links">
+        {% if project.example %}
+            <a href="{{ project.example }}" title="{{ project.title }} Demo" target="_blank">Demo</a>
+            {% if project.source %}
+                &nbsp;|&nbsp;
+            {% end if %}
+        {% end if %}
+
+        {% if project.source %}
+            <a href="{{ project.source }}" title="{{ project.title }} Source" target="_blank">Source</a>
+        {% end if %}
+        </div>
+    </div>
+{% end foreach %}

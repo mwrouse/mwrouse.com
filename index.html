@@ -6,47 +6,14 @@ template: default
 ---
 <h1 id="greeting-msg" style="line-height:0">Hello</h1>
 <div class="about-intro">
-    My name is <span class="accent">{{ site.author }}</span>. I am a passionate programmer, web developer, Radio Control lover, and Computer Science student.
-</div>
-<br/>
-<br/>
-<h3>Solar Car Team</h3>
-<div class="about">
-    My role on the <a href="http://solarcar.mst.edu" class="accent hover-underline">Missouri S&amp;T Solar Car Team</a> is to research, design, and develop
-    the telemetry system used to gather real-time data from the car.
-    <br/><br/>
-    Energy gathered from the solar panels is very valuable, this presents a challenge when you need to transmit data. Since the Sun won't always be shining, the telemetry system has to be extremely low-power but still be able to effectively transmit data. <br/>
+    My name is <span class="color-secondary">{{ site.author }}</span>.
     <br/>
-    Along with assisting in the hardware to transmit and receive telemetry, I lead a small team in designing and developing software which allows for viewing what is happening in the car in real-time.<br/>
-    This includes storing incoming data to be processed later to better understand how the car performs in certain scenarios.
+    I am a passionate developer, horror movie enthusiast, and roller coaster lover.
+    <br/><br/>
+    You should read about some of the <a href="/experience/">experiences</a> I've had.
+    <br/>
+    While you're at it, check out my <a href="/portfolio/">personal projects</a>.
 </div>
-<br/>
-<br/>
-<h3>Portfolio</h3>
-<h4>Some personal projects</h4>
-{% foreach site.portfolio as project %}
-    <!-- {{ project.title }} -->
-    <div class="project">
-        <div class="project-title accent-no-hover">
-            {{ project.title }} <span class="languages">{{ project.languages }}</span>
-        </div>
-        <div class="project-description">
-            {{ content }}
-        </div>
-        <div class="project-links">
-            {% if project.example %}
-            <a href="{{ project.example }}" title="Demo" class="second-accent">Demo</a>
-                {% if project.source %}
-                &nbsp;|&nbsp;
-                {% end if %}
-            {% end if %}
-            {% if project.source %}
-            <a href="{{ project.source }}" title="Source" class="second-accent">Source</a>
-            {% end if %}
-        </div>
-    </div>
-{% end foreach %}
-
 
 
 <script type="text/javascript">
@@ -55,3 +22,5 @@ template: default
         (document.getElementById('greeting-msg')).innerHTML = options[Math.floor(Math.random() * options.length)] + '!';
     });
 </script>
+
+<script type="text/javascript" src="{{ site.url + "assets/js/prism.js" }}"></script>

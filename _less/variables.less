@@ -1,10 +1,49 @@
-@color-primary: #1abc9c;
-@color-primary-hover: #00896e;
+@color-primary: #00c9a7;
+@color-primary-hover: #23a48e;
 
-@color-secondary: #A81E1E;
+@color-secondary: #845ec2;
+@color-secondary-hover: #541bb0;
+
+@color-accent: #c34a36;
 
 @color-font: #38424B;
 @color-white: #FFFFFF;
 
 @color-code-font: #2E2E2E;
 @color-code-background: #F5F5F5;
+
+@color-link: #2c73d2;
+@color-link-hover: #1459b4;
+
+
+.color-primary {
+    color: @color-primary;
+}
+.color-primary-hover {
+    &:hover {
+        color: @color-primary-hover;
+    }
+}
+
+.color-secondary {
+    color: @color-secondary;
+}
+.color-secondary-hover:hover {
+    color: @color-secondary-hover;
+}
+
+.color-accent {
+    color: @color-accent;
+}
+
+.color-standard {
+    color: @color-font;
+}
+
+.color-link {
+    color: @color-link;
+}
+
+.color-link-hover {
+    color: @color-link-hover;
+}

@@ -1,0 +1,27 @@
+---
+title: Experience
+navTitle: Experience
+template: default
+heroImage: ../assets/img/blog_header.jpg
+---
+<h1>Experience</h1>
+{% foreach site.experience as experience %}
+    <!-- {{ experience.title }} -->
+    <div class="experience">
+        <div class="title">
+            {{ experience.title }}
+
+        {% if experience.subtitle %}
+            <span class="subtitle">{{ experience.subtitle }}</span>
+        {% end if %}
+
+        {% if experience.years %}
+            <span class="years">{{ experience.years }}</span>
+        {% end if %}
+        </div>
+
+        <div class="description">
+            {{ content }}
+        </div>
+    </div>
+{% end foreach %}

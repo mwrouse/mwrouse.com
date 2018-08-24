@@ -1,0 +1,34 @@
+---
+title: Solar Car Team
+subtitle: Electrical Team Lead
+years: 2017 - 2018
+---
+In the fall semester of 2017, I started my role as the Electrical Team Lead for the <a href="https://solarcar.mst.edu" target="_blank">Missouri S&amp;T Solar Car Team</a>.
+This was a big step up from my previous roles in the team, but I was feeling up to the challenge after
+having a frustrating time at FSGP 2017.
+<br/>
+My primary goals were to increase the efficiency of the electrical team. While we were unable to race due
+to BPS issues (actual electrical magic), ridiculous roadblocks put up by the school, and poor team morale, I believe I accomplished
+my goal. I ended up designing several non-complex circuit boards, and wrote a ton of software.
+<figure>
+        <img src="{{ site.url + "assets/img/experience/me_fsgp2018.jpg" }}" class="outline" />
+        <figcaption>Not giving up on the BPS until the last possible moment</figcaption>
+    </figure>
+I created several tools for the electrical team that increases efficiency when writing code, designing boards, and purchasing components.
+<br/><br/>
+The first, which I had already been working on for almost a year at the start of the school year, was a Driver Library written in C.
+This library, complete with unit tests, allows us to write less common code (e.g., CAN Drivers, SPI Drivers) and gives us a piece of mind of knowing that it works.
+<br/>
+At the time, we used Texas Instruments MSP430F5529 microcontrollers, so I wanted this library to provide an Arduino-like syntax but still be robust
+enough to support different microcontrollers (and different CAN controllers) with different features and specs.
+<br/>
+The driver library ended up being completely modular. The microcontroller and CAN controller drivers are both selected at runtime
+based on preprocessor directives set by the compiler (or IDE). This is what I am most proud of on my time with the team.
+<br/><br/>
+My <a href="https://github.com/mst-solar-car/kicad-bom-generator" target="_blank">KiCad BOM Generator</a> was created to reduce the amount of time it takes team members to produce Bill-of-Materials for their projects, and to encforce a common formatting.
+<br/>
+It is highly customizable and fully-featured, I'm also really proud of this.
+<br/><br/>
+I also created a common library of KiCad components (symbols and footprints) for the majority of components we use on the team. This is complete with metadata for each component
+including suplier and manufacturer information. The goal of this was to reduce the amount of time to design boards, as well as reduce errors in footprints since
+team members no longer need to be making the same footprints as other members.
