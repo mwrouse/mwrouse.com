@@ -8,7 +8,7 @@ heroImage: ../assets/img/blog_header.jpg
 {% foreach site.experience as experience %}
     <!-- {{ experience.title }} -->
     <div class="experience">
-        <div class="title">
+        <div class="title" id="{{ experience.title }}">
             {{ experience.title }}
 
         {% if experience.subtitle %}
